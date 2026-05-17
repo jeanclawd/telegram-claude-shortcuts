@@ -31,16 +31,18 @@ A chat-scoped list wins over the plugin's `all_private_chats` defaults and **is 
 
 ### Prereqs
 
-- A working Claude Code Telegram plugin install (token in `~/.claude/channels/telegram/.env` as `TELEGRAM_BOT_TOKEN=...`)
+- A working Claude Code Telegram plugin install
 - Python 3 (no external deps — `urllib` only)
-- Your Telegram numeric `chat_id`
+- Two values, supplied via real env vars or via `~/.claude/channels/telegram/.env`:
+  - `TELEGRAM_BOT_TOKEN` — from [@BotFather](https://t.me/BotFather)
+  - `TELEGRAM_CHAT_ID` — the numeric chat_id to scope commands to (DM yourself the bot and check `getUpdates`, or any chat-id lookup bot)
 
 ### Run it
 
 ```bash
-# edit CHAT_ID and COMMANDS at the top
+# edit COMMANDS at the top, then:
 $ ./telegram_commands.py
-registered 10 commands for chat 8581449495:
+registered 10 commands for chat <YOUR_CHAT_ID>:
   /start             Welcome and setup guide
   /help              What this bot can do
   /status            Check your pairing status
@@ -59,7 +61,7 @@ To **change** the menu: edit the `COMMANDS = [...]` block and re-run. To **wipe*
 TOKEN=$(grep '^TELEGRAM_BOT_TOKEN=' ~/.claude/channels/telegram/.env | cut -d= -f2)
 curl -s "https://api.telegram.org/bot${TOKEN}/deleteMyCommands" \
   -H 'Content-Type: application/json' \
-  -d '{"scope":{"type":"chat","chat_id":<YOUR_CHAT_ID>}}'
+  -d "{\"scope\":{\"type\":\"chat\",\"chat_id\":${TELEGRAM_CHAT_ID}}}"
 ```
 
 ### How Claude handles the new shortcuts
