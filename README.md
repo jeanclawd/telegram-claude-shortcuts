@@ -93,6 +93,11 @@ Strictly enforced by the Bot API:
 - [Claude Code Telegram plugin](https://github.com/anthropics/claude-plugins)
 - [Claude Code skills docs](https://docs.claude.com/en/docs/claude-code/skills)
 
+## Infographic
+
+<img width="2752" height="1536" alt="image" src="https://github.com/user-attachments/assets/f3d74ecb-e381-4553-bc64-0d7dca13e1f0" />
+
+
 ## License
 
 MIT.
