@@ -42,7 +42,7 @@ A chat-scoped list wins over the plugin's `all_private_chats` defaults and **is 
 ```bash
 # edit COMMANDS at the top, then:
 $ ./telegram_commands.py
-registered 10 commands for chat <YOUR_CHAT_ID>:
+registered 11 commands for chat <YOUR_CHAT_ID>:
   /start             Welcome and setup guide
   /help              What this bot can do
   /status            Check your pairing status
@@ -53,6 +53,7 @@ registered 10 commands for chat <YOUR_CHAT_ID>:
   /serve_streamlit   Expose a Streamlit app on jean-clawd.com
   /init              Initialize CLAUDE.md for a repo
   /memory            Dump current memory state
+  /projects          List past projects; add a name to reload one
 ```
 
 To **change** the menu: edit the `COMMANDS = [...]` block and re-run. To **wipe** it and fall back to the plugin defaults:
@@ -70,6 +71,24 @@ When `/usage` arrives, the plugin has no `bot.command('usage', ...)` handler, so
 
 - **Skill** — create `~/.claude/skills/usage/SKILL.md` whose frontmatter `description` names the trigger ("Use when the user invokes /usage…"). The skill body is the procedure. Best for repeatable actions.
 - **Inline CLAUDE.md** — fine for one-offs; document what should happen when the slash is seen.
+
+### Shortcuts that take arguments
+
+Because the menu entry is just a label and the *handling* is plain-text fallthrough, anything the
+user types after the slash arrives at Claude verbatim. So a single shortcut can branch on its
+argument — no extra Bot API registration needed.
+
+`/projects` is the worked example shipped here:
+
+| Input | What Claude does |
+|---|---|
+| `/projects` | Lists past projects (name, branch, last-commit date, dirty flag, one-line descriptor). |
+| `/projects <name>` | Resolves the name, reads that project's `CLAUDE.md`/`AGENTS.md`/`README` + recent git log/status, and **reloads its context** so the next messages continue work on it. |
+
+The skill (`~/.claude/skills/projects/SKILL.md`) documents both modes and a `list_projects.py`
+helper does the scanning. The menu only advertises the bare `/projects`; the argument form is
+discovered from the skill's reply ("Reply `/projects <name>` to load one"). Pattern to copy:
+register the bare command in the menu, then let the skill parse whatever follows.
 
 ## Command name rules
 

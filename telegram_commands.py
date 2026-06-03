@@ -29,6 +29,7 @@ COMMANDS = [
     {"command": "serve_streamlit", "description": "Expose a Streamlit app on jean-clawd.com"},
     {"command": "init",    "description": "Initialize CLAUDE.md for a repo"},
     {"command": "memory",  "description": "Dump current memory state"},
+    {"command": "projects", "description": "List past projects; add a name to reload one"},
 ]
 
 
